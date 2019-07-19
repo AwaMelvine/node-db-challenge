@@ -12,7 +12,18 @@ module.exports = {
 
         const action = await db('actions').where({ id }).first();
         action.completed = !!action.completed;
+        action.contexts = await this.getActionContexts(action.id);
         return action;
+    },
+
+    async getActionContexts(action_id) {
+        const contexts = await db.select('contexts.id', 'contexts.name')
+            .from('contexts')
+            .join('action_context', 'contexts.id', 'action_context.context_id')
+            .join('actions', 'actions.id', 'action_context.action_id')
+            .where('actions.id', action_id);
+
+        return contexts;
     },
 
     async update(changes, id) {
