@@ -33,4 +33,9 @@ module.exports = {
         const count = await db('projects').where('id', id).update(changes);
         return (count > 0 ? this.get(id) : null);
     },
+
+    async remove(id) {
+        const count = await db('projects').where('id', id).del();
+        return count;
+    }
 }
