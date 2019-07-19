@@ -22,5 +22,15 @@ module.exports = {
             ...action,
             completed: !!action.completed
         }));
-    }
+    },
+
+    async add(project) {
+        const [id] = await db("projects").insert(project);
+        return this.get(id);
+    },
+
+    async update(changes, id) {
+        const count = await db('projects').where('id', id).update(changes);
+        return (count > 0 ? this.get(id) : null);
+    },
 }
