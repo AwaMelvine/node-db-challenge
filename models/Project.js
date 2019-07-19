@@ -29,6 +29,11 @@ module.exports = {
         return this.get(id);
     },
 
+    async addAction(action) {
+        const [id] = await db("actions").insert(action);
+        return this.get(id);
+    },
+
     async update(changes, id) {
         const count = await db('projects').where('id', id).update(changes);
         return (count > 0 ? this.get(id) : null);
