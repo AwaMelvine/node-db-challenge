@@ -11,6 +11,7 @@ module.exports = {
         }
 
         const project = await db('projects').where({ id }).first();
+
         project.completed = !!project.completed;
         project.actions = await this.getProjectActions(id);
         return project;
@@ -31,7 +32,12 @@ module.exports = {
 
     async addAction(action) {
         const [id] = await db("actions").insert(action);
-        return this.get(id);
+        const newAction = await db('actions').where('id', id).first();
+
+        return {
+            ...newAction,
+            completed: !!newAction.completed
+        };
     },
 
     async update(changes, id) {

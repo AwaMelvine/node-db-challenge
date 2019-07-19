@@ -21,5 +21,22 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/:id/actions', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { body } = req;
+        const action = {
+            ...body,
+            project_id: id
+        };
+
+        const projects = await Project.addAction(action);
+        
+        res.status(200).json({ data: projects });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add action' })
+    }
+});
+
 
 module.exports = router;
