@@ -18,6 +18,9 @@ module.exports = {
 
     async getProjectActions(id) {
         const actions = await db('actions').where('project_id', id);
-        return actions;
+        return actions.map(action => ({
+            ...action,
+            completed: !!action.completed
+        }));
     }
 }
