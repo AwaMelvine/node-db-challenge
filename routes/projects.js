@@ -24,9 +24,19 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const project = await Project.add(req.body);
-        res.status(200).json({ data: project });
+        res.status(201).json({ data: project });
     } catch (error) {
         res.status(500).json({ error: 'Failed to create new project' });
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const project = await Project.update(req.body, id);
+        res.status(200).json({ data: project });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update project' });
     }
 });
 
